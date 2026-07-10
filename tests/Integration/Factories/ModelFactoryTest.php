@@ -5,16 +5,19 @@ namespace OpenSearch\ScoutDriver\Tests\Integration\Factories;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Searchable;
 use OpenSearch\Adapter\Search\SearchResult;
+use OpenSearch\ScoutDriver\Engine;
+use OpenSearch\ScoutDriver\Factories\DocumentFactory;
 use OpenSearch\ScoutDriver\Factories\ModelFactory;
 use OpenSearch\ScoutDriver\Tests\App\Client;
 use OpenSearch\ScoutDriver\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 
-/**
- * @covers \OpenSearch\ScoutDriver\Factories\ModelFactory
- *
- * @uses   \OpenSearch\ScoutDriver\Engine
- * @uses   \OpenSearch\ScoutDriver\Factories\DocumentFactory
- */
+#[CoversClass(ModelFactory::class)]
+#[UsesClass(Engine::class)]
+#[UsesClass(DocumentFactory::class)]
 final class ModelFactoryTest extends TestCase
 {
     private ModelFactory $modelFactory;
@@ -38,11 +41,8 @@ final class ModelFactoryTest extends TestCase
         return $methods;
     }
 
-    /**
-     * @dataProvider factoryMethodProvider
-     *
-     * @testdox Test empty model collection is made from empty search response using $factoryMethod
-     */
+    #[DataProvider('factoryMethodProvider')]
+    #[TestDox('Test empty model collection is made from empty search response using $factoryMethod')]
     public function test_empty_model_collection_is_made_from_empty_search_result(string $factoryMethod): void
     {
         $builder = new Builder(new Client(), 'test');
@@ -59,17 +59,14 @@ final class ModelFactoryTest extends TestCase
         $this->assertTrue($models->isEmpty());
     }
 
-    /**
-     * @dataProvider factoryMethodProvider
-     *
-     * @testdox Test empty model collection can be made from not empty search response using $factoryMethod
-     */
+    #[DataProvider('factoryMethodProvider')]
+    #[TestDox('Test empty model collection can be made from not empty search response using $factoryMethod')]
     public function test_model_collection_can_be_made_from_not_empty_search_result(string $factoryMethod): void
     {
         $source = collect([
             ['id' => 1, 'name' => 'John'],
             ['id' => 2, 'name' => 'Martin'],
-        ])->map(static fn (array $fields) => factory(Client::class)->create($fields));
+        ])->map(static fn (array $fields) => Client::factory()->create($fields));
 
         $builder = new Builder(new Client(), 'test');
 

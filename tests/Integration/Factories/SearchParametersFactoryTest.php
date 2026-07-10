@@ -2,15 +2,15 @@
 
 namespace OpenSearch\ScoutDriver\Tests\Integration\Factories;
 
+use InvalidArgumentException;
 use Laravel\Scout\Builder;
 use OpenSearch\ScoutDriver\Factories\SearchParametersFactory;
 use OpenSearch\ScoutDriver\Tests\App\Client;
 use OpenSearch\ScoutDriver\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
-/**
- * @covers \OpenSearch\ScoutDriver\Factories\SearchParametersFactory
- */
+#[CoversClass(SearchParametersFactory::class)]
 final class SearchParametersFactoryTest extends TestCase
 {
     private SearchParametersFactory $searchParametersFactory;
@@ -83,6 +83,19 @@ final class SearchParametersFactoryTest extends TestCase
                 ],
             ],
         ], $searchParameters->toArray());
+    }
+
+    public function test_an_exception_is_thrown_when_where_filter_uses_an_unsupported_operator(): void
+    {
+        $model = new Client();
+        $builder = (new Builder($model, 'book'))->where('price', '>', 60);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The ">" operator is not supported by the OpenSearch Scout driver, only "=" is.'
+        );
+
+        $this->searchParametersFactory->makeFromBuilder($builder);
     }
 
     public function test_search_parameters_can_be_made_from_builder_with_wherein_filter(): void

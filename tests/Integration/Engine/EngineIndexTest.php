@@ -6,10 +6,10 @@ use InvalidArgumentException;
 use OpenSearch\Adapter\Indices\IndexManager;
 use OpenSearch\ScoutDriver\Engine;
 use OpenSearch\ScoutDriver\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Depends;
 
-/**
- * @covers \OpenSearch\ScoutDriver\Engine
- */
+#[CoversClass(Engine::class)]
 final class EngineIndexTest extends TestCase
 {
     private const INDEX_NAME = 'opensearch-scout-driver-test-index';
@@ -41,9 +41,7 @@ final class EngineIndexTest extends TestCase
         $this->engine->createIndex(self::INDEX_NAME, ['primaryKey' => 'bar']);
     }
 
-    /**
-     * @depends test_index_with_given_name_can_be_created
-     */
+    #[Depends('test_index_with_given_name_can_be_created')]
     public function test_index_can_be_deleted_by_name(): void
     {
         $this->engine->deleteIndex(self::INDEX_NAME);

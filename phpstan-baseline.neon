@@ -1,11 +1,223 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#Cannot call method (getScoutKey|getScoutModelsByIds|queryScoutModelsByIds|searchableAs|scoutMetadata|pushSoftDeleteMetadata|toSearchableArray)\(\) on Illuminate\\Database\\Eloquent\\Model\|null#'
-			count: 2
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:getScoutKey\(\)\.$#'
+			identifier: method.notFound
+			count: 1
 			path: src/Engine.php
 
 		-
-			message: "#^Cannot call method extend\\(\\) on mixed\\.$#"
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:searchableAs\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/Engine.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Engine.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) expects callable\(mixed, int\|string\)\: string, Closure\(OpenSearch\\Adapter\\Search\\Hit\)\: string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine.php
+
+		-
+			message: '#^Parameter \#1 \$indexName of method OpenSearch\\Adapter\\Documents\\DocumentManager\:\:delete\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine.php
+
+		-
+			message: '#^Parameter \#1 \$indexName of method OpenSearch\\Adapter\\Documents\\DocumentManager\:\:deleteByQuery\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine.php
+
+		-
+			message: '#^Parameter \#1 \$indexName of method OpenSearch\\Adapter\\Documents\\DocumentManager\:\:index\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:getScoutKey\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:pushSoftDeleteMetadata\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:scoutMetadata\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:toSearchableArray\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) expects callable\(mixed, int\|string\)\: OpenSearch\\Adapter\\Documents\\Document, Closure\(Illuminate\\Database\\Eloquent\\Model\)\: OpenSearch\\Adapter\\Documents\\Document given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factories/DocumentFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:getScoutKey\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:getScoutModelsByIds\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:queryScoutModelsByIds\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Cannot call method cursor\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Cannot call method filter\(\) on T of mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Cannot call method sortBy\(\) on T of mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Cannot call method values\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_flip expects array\<int\|string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) expects callable\(mixed, int\|string\)\: string, Closure\(OpenSearch\\Adapter\\Search\\Hit\)\: string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Factories/ModelFactory.php
+
+		-
+			message: '#^Binary operation "\*" between \(float\|int\) and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Binary operation "\-" between mixed and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:searchableAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Call to function property_exists\(\) with Laravel\\Scout\\Builder and ''whereIns'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Method OpenSearch\\ScoutDriver\\Factories\\SearchParametersFactory\:\:makeIndex\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Method OpenSearch\\ScoutDriver\\Factories\\SearchParametersFactory\:\:makeSize\(\) should return int\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) expects callable\(mixed, int\|string\)\: array\{terms\: non\-empty\-array\<string, array\>\}, Closure\(array, string\)\: array\{terms\: non\-empty\-array\<string, array\>\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) expects callable\(mixed, int\|string\)\: non\-empty\-array, Closure\(array\)\: non\-empty\-array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: array.invalidKey
+			count: 2
+			path: src/Factories/SearchParametersFactory.php
+
+		-
+			message: '#^Parameter \#2 \$callback of method Illuminate\\Support\\Manager\:\:extend\(\) expects bindable closure, static closure given\.$#'
+			identifier: argument.staticClosure
+			count: 1
+			path: src/ServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$concrete of method Illuminate\\Contracts\\Container\\Container\:\:bindIf\(\) expects Closure\|string\|null, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/ServiceProvider.php

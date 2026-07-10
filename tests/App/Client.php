@@ -3,10 +3,12 @@
 namespace OpenSearch\ScoutDriver\Tests\App;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
+use OpenSearch\ScoutDriver\Tests\App\Factories\ClientFactory;
 
 /**
  * @property int    $id
@@ -18,6 +20,7 @@ use Laravel\Scout\Searchable;
  */
 final class Client extends Model
 {
+    use HasFactory;
     use Searchable;
     use SoftDeletes;
 
@@ -26,6 +29,11 @@ final class Client extends Model
     protected $hidden = [
         'deleted_at',
     ];
+
+    protected static function newFactory(): ClientFactory
+    {
+        return ClientFactory::new();
+    }
 
     /**
      * @return array
