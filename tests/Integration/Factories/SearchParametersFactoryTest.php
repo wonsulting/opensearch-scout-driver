@@ -8,6 +8,7 @@ use OpenSearch\ScoutDriver\Factories\SearchParametersFactory;
 use OpenSearch\ScoutDriver\Tests\App\Client;
 use OpenSearch\ScoutDriver\Tests\Integration\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use ReflectionMethod;
 use stdClass;
 
 #[CoversClass(SearchParametersFactory::class)]
@@ -87,6 +88,10 @@ final class SearchParametersFactoryTest extends TestCase
 
     public function test_an_exception_is_thrown_when_where_filter_uses_an_unsupported_operator(): void
     {
+        if ((new ReflectionMethod(Builder::class, 'where'))->getNumberOfParameters() < 3) {
+            $this->markTestSkipped('The "where" method does not support an explicit operator in the current Scout version');
+        }
+
         $model = new Client();
         $builder = (new Builder($model, 'book'))->where('price', '>', 60);
 
