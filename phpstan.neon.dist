@@ -3,10 +3,11 @@ includes:
 
 parameters:
   level: max
-  checkMissingIterableValueType: false
-  checkGenericClassInNonGenericObjectType: false
   paths:
     - src
   ignoreErrors:
-    - '#Parameter .+? of method Illuminate\\Support\\Collection<.+?>::.+?\(\) expects .+? given#'
-    - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::(getScoutKey|getScoutModelsByIds|queryScoutModelsByIds|searchableAs|scoutMetadata|pushSoftDeleteMetadata|toSearchableArray)\(\)#'
+    # Replaces the PHPStan 1 options checkGenericClassInNonGenericObjectType and
+    # checkMissingIterableValueType (removed in PHPStan 2): this package does not
+    # annotate generics / iterable value types on its Scout + Collection surface.
+    - identifier: missingType.generics
+    - identifier: missingType.iterableValue

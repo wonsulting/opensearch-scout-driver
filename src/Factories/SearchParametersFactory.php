@@ -2,6 +2,7 @@
 
 namespace OpenSearch\ScoutDriver\Factories;
 
+use InvalidArgumentException;
 use Laravel\Scout\Builder;
 use OpenSearch\Adapter\Search\SearchParameters;
 use stdClass;
@@ -65,9 +66,22 @@ class SearchParametersFactory implements SearchParametersFactoryInterface
 
     protected function makeFilter(Builder $builder): ?array
     {
-        $filter = collect($builder->wheres)->map(static fn ($value, string $field) => [
-            'term' => [$field => $value],
-        ])->values();
+        $filter = collect($builder->wheres)->map(static function ($value, $field) {
+            // Scout >= 11 stores each where as ['field' => ..., 'operator' => ..., 'value' => ...];
+            // Scout <= 10 stores them as [field => value]. Both map to an equality term filter.
+            if (is_array($value) && array_key_exists('field', $value)) {
+                if (($value['operator'] ?? '=') !== '=') {
+                    throw new InvalidArgumentException(sprintf(
+                        'The "%s" operator is not supported by the OpenSearch Scout driver, only "=" is.',
+                        (string)$value['operator']
+                    ));
+                }
+
+                return ['term' => [$value['field'] => $value['value']]];
+            }
+
+            return ['term' => [$field => $value]];
+        })->values();
 
         if (property_exists($builder, 'whereIns')) {
             $whereIns = collect($builder->whereIns)->map(static fn (array $values, string $field) => [

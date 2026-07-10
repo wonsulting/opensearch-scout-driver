@@ -38,7 +38,6 @@ class TestCase extends TestbenchTestCase
         parent::setUp();
 
         $this->loadMigrationsFrom(dirname(__DIR__) . '/App/database/migrations');
-        $this->withFactories(dirname(__DIR__) . '/App/database/factories');
 
         $this->artisan('migrate')->run();
         $this->artisan('opensearch:migrate')->run();

@@ -5,22 +5,25 @@ namespace OpenSearch\ScoutDriver\Tests\Integration\Engine;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Scout\Builder;
 use OpenSearch\Adapter\Search\SearchResult;
+use OpenSearch\ScoutDriver\Engine;
+use OpenSearch\ScoutDriver\Factories\DocumentFactory;
+use OpenSearch\ScoutDriver\Factories\ModelFactory;
+use OpenSearch\ScoutDriver\Factories\SearchParametersFactory;
 use OpenSearch\ScoutDriver\Tests\App\Client;
 use OpenSearch\ScoutDriver\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Throwable;
 
-/**
- * @covers \OpenSearch\ScoutDriver\Engine
- *
- * @uses   \OpenSearch\ScoutDriver\Factories\DocumentFactory
- * @uses   \OpenSearch\ScoutDriver\Factories\ModelFactory
- * @uses   \OpenSearch\ScoutDriver\Factories\SearchParametersFactory
- */
+#[CoversClass(Engine::class)]
+#[UsesClass(DocumentFactory::class)]
+#[UsesClass(ModelFactory::class)]
+#[UsesClass(SearchParametersFactory::class)]
 final class EngineSearchTest extends TestCase
 {
     public function test_ids_can_be_retrieved_from_search_result(): void
     {
-        $source = factory(Client::class, rand(2, 10))->create();
+        $source = Client::factory()->count(rand(2, 10))->create();
         $found = Client::search()->keys();
 
         $this->assertEquals(
@@ -31,7 +34,7 @@ final class EngineSearchTest extends TestCase
 
     public function test_all_models_can_be_found(): void
     {
-        $source = factory(Client::class, rand(2, 10))->create();
+        $source = Client::factory()->count(rand(2, 10))->create();
         $found = Client::search()->get();
 
         $this->assertEquals($source->toArray(), $found->toArray());
@@ -40,9 +43,9 @@ final class EngineSearchTest extends TestCase
     public function test_models_corresponding_query_string_can_be_found(): void
     {
         // add some mixins
-        factory(Client::class, rand(2, 10))->create();
+        Client::factory()->count(rand(2, 10))->create();
 
-        $target = factory(Client::class)->create(['name' => uniqid('John')]);
+        $target = Client::factory()->create(['name' => uniqid('John')]);
         $found = Client::search($target->name)->get();
 
         $this->assertCount(1, $found);
@@ -52,9 +55,9 @@ final class EngineSearchTest extends TestCase
     public function test_search_result_can_be_filtered_with_where_clause(): void
     {
         // add some mixins
-        factory(Client::class, rand(2, 10))->create();
+        Client::factory()->count(rand(2, 10))->create();
 
-        $target = factory(Client::class)->create(['phone_number' => 'test: +01234567890']);
+        $target = Client::factory()->create(['phone_number' => 'test: +01234567890']);
         $found = Client::search()->where('phone_number', $target->phone_number)->get();
 
         $this->assertCount(1, $found);
@@ -68,9 +71,9 @@ final class EngineSearchTest extends TestCase
         }
 
         // add some mixins
-        factory(Client::class, rand(2, 10))->create();
+        Client::factory()->count(rand(2, 10))->create();
 
-        $target = factory(Client::class)->create(['email' => 'foo@test.com']);
+        $target = Client::factory()->create(['email' => 'foo@test.com']);
         $found = Client::search()->whereIn('email', ['foo@test.com', 'bar@test.com'])->get();
 
         $this->assertCount(1, $found);
@@ -79,7 +82,7 @@ final class EngineSearchTest extends TestCase
 
     public function test_search_result_can_be_sorted(): void
     {
-        $source = factory(Client::class, rand(2, 10))->create()->sortBy('email')->values();
+        $source = Client::factory()->count(rand(2, 10))->create()->sortBy('email')->values();
         $found = Client::search()->orderBy('email')->get();
 
         $this->assertEquals($source->toArray(), $found->toArray());
@@ -87,7 +90,7 @@ final class EngineSearchTest extends TestCase
 
     public function test_search_result_can_be_limited(): void
     {
-        factory(Client::class, rand(10, 20))->create();
+        Client::factory()->count(rand(10, 20))->create();
 
         $found = Client::search()->take(5)->get();
 
@@ -97,9 +100,9 @@ final class EngineSearchTest extends TestCase
     public function test_search_result_can_be_paginated(): void
     {
         // add some mixins
-        factory(Client::class, 6)->create();
+        Client::factory()->count(6)->create();
 
-        $target = factory(Client::class, 5)
+        $target = Client::factory()->count(5)
             ->create(['name' => uniqid('John')])
             ->sortBy('phone_number')
             ->values();
@@ -119,7 +122,7 @@ final class EngineSearchTest extends TestCase
 
     public function test_raw_search_returns_instance_of_search_result(): void
     {
-        $source = factory(Client::class, rand(2, 10))->create();
+        $source = Client::factory()->count(rand(2, 10))->create();
         $foundRaw = Client::search()->raw();
 
         $this->assertInstanceOf(SearchResult::class, $foundRaw);
@@ -131,7 +134,7 @@ final class EngineSearchTest extends TestCase
         // enable soft deletes
         $this->config->set('scout.soft_delete', true);
 
-        factory(Client::class, rand(2, 10))->create(['deleted_at' => now()]);
+        Client::factory()->count(rand(2, 10))->create(['deleted_at' => now()]);
 
         $found = Client::search()->get();
 
@@ -141,7 +144,7 @@ final class EngineSearchTest extends TestCase
     public function test_mini_language_syntax_can_be_used_in_query_string(): void
     {
         foreach (['Stan', 'John', 'Matthew'] as $name) {
-            factory(Client::class)->create(compact('name'));
+            Client::factory()->create(compact('name'));
         }
 
         $found = Client::search('name:(John OR Matthew)')->get();

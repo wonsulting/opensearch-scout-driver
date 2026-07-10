@@ -2,16 +2,16 @@
 
 namespace OpenSearch\ScoutDriver\Tests\Integration\Factories;
 
+use OpenSearch\ScoutDriver\Engine;
 use OpenSearch\ScoutDriver\Factories\DocumentFactory;
 use OpenSearch\ScoutDriver\Tests\App\Client;
 use OpenSearch\ScoutDriver\Tests\Integration\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use UnexpectedValueException;
 
-/**
- * @covers \OpenSearch\ScoutDriver\Factories\DocumentFactory
- *
- * @uses   \OpenSearch\ScoutDriver\Engine
- */
+#[CoversClass(DocumentFactory::class)]
+#[UsesClass(Engine::class)]
 final class DocumentFactoryTest extends TestCase
 {
     private DocumentFactory $documentFactory;
@@ -25,7 +25,7 @@ final class DocumentFactoryTest extends TestCase
 
     public function test_document_collection_can_be_made_from_model_collection(): void
     {
-        $clients = factory(Client::class, rand(2, 10))->create();
+        $clients = Client::factory()->count(rand(2, 10))->create();
         $documents = $this->documentFactory->makeFromModels($clients);
 
         for ($i = 0; $i < $clients->count(); $i++) {
@@ -46,7 +46,7 @@ final class DocumentFactoryTest extends TestCase
             'by the Client::toSearchableArray or Client::scoutMetadata methods.'
         );
 
-        $clients = factory(Client::class, rand(2, 10))->create();
+        $clients = Client::factory()->count(rand(2, 10))->create();
 
         // add restricted _id field in the scout metadata
         $clients->each(static function (Client $client) {
